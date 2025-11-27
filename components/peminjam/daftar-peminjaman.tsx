@@ -25,7 +25,7 @@ export function DaftarPeminjaman() {
       },
       {
         id: 2,
-        judul: 'Bumi Manusia',
+        judul: 'Bumi Manusia   ',
         pengarang: 'Pramoedya',
         status: 'Dipinjam',
       },

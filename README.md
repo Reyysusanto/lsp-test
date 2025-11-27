@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LSP Project — Next.js App Router + Prisma + PostgreSQL
 
-## Getting Started
+Project ini merupakan aplikasi berbasis **Next.js (App Router)** dengan fitur autentikasi, manajemen data menggunakan **Prisma ORM**, koneksi ke **PostgreSQL**, dan pengelolaan state data memakai **React Query**.  
+Project ini dikembangkan untuk keperluan **LSP / Uji Kompetensi**.
 
-First, run the development server:
+---
+
+## 🚀 Tech Stack & Library
+
+### **Frontend**
+
+- **Next.js 16 (App Router)**
+- **React 19**
+- **TailwindCSS 4**
+- **Radix UI + Shadcn UI**
+- **React Hook Form**
+- **Zod** (validasi schema)
+- **Lucide Icons**
+- **Sonner** (toast UI)
+- **Axios** (HTTP client)
+
+### **Backend**
+
+- **Next.js API Route (app/api/...)**
+- **Prisma ORM v7**
+- **PostgreSQL** (`pg` driver)
+- **jsonwebtoken (JWT)** untuk autentikasi
+- **bcrypt / bcryptjs** untuk hashing password
+- **dotenv** untuk environment variables
+
+### **Utility**
+
+- **TanStack React Query v5**
+- **class-variance-authority / clsx / tailwind-merge**
+- **ESLint + TypeScript + tsx**
+
+---
+
+## 📁 Folder Structure (Next.js App Router)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+project-root/
+│
+├── app/
+│ ├── layout.tsx
+│ ├── page.tsx
+│ │
+│ ├── login/
+│ │ └── page.tsx
+│ │
+│ ├── dashboard/
+│ │ └── page.tsx
+│ │
+│ ├── api/
+│ ├── auth/
+│ │ ├── register/route.ts
+│ │ └── login/route.ts
+│ │
+│ ├── user/
+│ │ └── route.ts
+│ │
+│ └── ... endpoint lainnya
+│
+├── components/
+│ ├── ui/
+│ └── ...
+│
+├── lib/
+│ ├── prisma.ts
+│ ├── auth.ts
+│ └── utils.ts
+│
+├── prisma/
+│ └── schema.prisma
+│
+├── public/
+│ └── assets...
+│
+├── package.json
+├── tsconfig.json
+├── tailwind.config.js
+└── .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Isi Env :
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/NAMA_DATABASE"
+JWT_SECRET="your-secret-token"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🗄️ Prisma Setup
 
-## Learn More
+### **1. Generate Prisma Client**
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx prisma generate
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### **2. Migrasi Database**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx prisma migrate dev --name init
+```
 
-## Deploy on Vercel
+### **3. Cek Database via Prisma Studio**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npx prisma studio
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+▶️ Cara Menjalankan Project
+
+```bash
+1. Install dependencies
+npm install
+
+2. Jalankan mode development
+npm run dev
+
+Server berjalan di:
+http://localhost:3000
+
+3. Build untuk production
+npm run build
+
+4. Run mode production
+npm start
+```
