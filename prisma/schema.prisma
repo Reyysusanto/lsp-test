@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Status_peminjam {
+  AKTIF
+  TIDAK_AKTIF
+}
+
+enum Status_pinjam {
+  DIPROSES
+  DISETUJUI
+  DITOLAK
+  SELESAI
+}
+
+model Admin {
+  id   String @id @default(uuid())
+  nama String @db.VarChar(40)
+  user String @unique @db.VarChar(20)
+  pass String @db.VarChar(255)
+
+  peminjamanBukus Peminjaman_buku[]
+}
+
+model Peminjam {
+  id         String          @id @default(uuid())
+  nama       String          @db.VarChar(40)
+  tgl_daftar DateTime        @default(now())
+  user       String          @unique @db.VarChar(20)
+  pass       String          @db.VarChar(255)
+  foto       String?         @db.VarChar(100)
+  status     Status_peminjam @default(AKTIF)
+
+  peminajanBukus Peminjaman_buku[]
+}
+
+model Peminjaman_buku {
+  kode_pinjam      String              @id @default(uuid())
+  tgl_pesan        DateTime            @default(now())
+  tgl_ambil        DateTime?
+  tgl_wajibKembali DateTime?
+  tgl_kembali      DateTime?
+  status_pinjam    Status_pinjam       @default(DIPROSES)
+  adminId          String?
+  peminjamId       String?
+  detailPeminjaman Detail_peminjaman[]
+
+  admin    Admin?    @relation(fields: [adminId], references: [id])
+  peminjam Peminjam? @relation(fields: [peminjamId], references: [id])
+}
+
+model Buku {
+  id               String              @id @default(uuid())
+  judul            String              @db.VarChar(100)
+  tgl_terbit       DateTime
+  pengarang        String              @db.VarChar(50)
+  penerbit         String              @db.VarChar(50)
+  detailPeminjaman Detail_peminjaman[]
+}
+
+model Detail_peminjaman {
+  id               String @id @default(uuid())
+  peminjamanBukuId String
+  bukuId           String
+
+  peminjamanBuku Peminjaman_buku @relation(fields: [peminjamanBukuId], references: [kode_pinjam])
+  buku           Buku            @relation(fields: [bukuId], references: [id])
+}
